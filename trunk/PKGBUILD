@@ -14,10 +14,17 @@ makedepends=('gtk3' 'meson' 'wayland-protocols') # 'doxygen' 'graphviz' 'python-
 optdepends=('gtk3: libinput debug-gui'
             'python-pyudev: libinput measure'
             'python-libevdev: libinput measure')
-source=(https://freedesktop.org/software/$pkgname/$pkgname-$pkgver.tar.xz{,.sig})
+source=(https://freedesktop.org/software/$pkgname/$pkgname-$pkgver.tar.xz{,.sig}
+       'frankenstein.patch')
 sha512sums=('fc5244dc90ceb710f7b5bb76a3cafc7dd5a8d5fa05c51122412615bfc3a99435d6a1017b79c3ce73561139fc2f5959acaf16cb9500796ea2f3eb6cb95d1a1acb'
-            'SKIP')
+            'SKIP'
+            'f5f14359296237d2349f6420ff73dadf893c2b5c05d13620a589a14d5db57d75de710f8df826c80740374f6cb072e190d9da0858c2e153d6241c84fa3eb3e596')
 validpgpkeys=('3C2C43D9447D5938EF4551EBE23B7E70B467F0BF') # Peter Hutterer (Who-T) <office@who-t.net>
+
+prepare() {
+  cd "$pkgname-$pkgver"
+  patch --strip=1 --input="${srcdir}/frankenstein.patch"
+}
 
 build() {
   arch-meson $pkgname-$pkgver build \
